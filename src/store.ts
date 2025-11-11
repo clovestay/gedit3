@@ -101,7 +101,7 @@ export const advancedSettings = writable<AdvancedSettings>({
         minimum: 50,
         average: 50
     },
-    colormap: Colormap.IndigoMaterial,
+    colormap: Colormap.Rocket,
     showCellValues: true,
     drawCellOutlines: true,
     squareCells: false,

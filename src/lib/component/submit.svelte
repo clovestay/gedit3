@@ -163,6 +163,13 @@
   <script src="https://www.google.com/recaptcha/api.js?render={key}" async defer></script>
 </svelte:head>
 
+{#if $referenceMatrix?.special == "Tabula Sapiens"}
+    <Message message={{ type: "warning" }}>
+        <div>
+            The Tabula Sapiens reference is a work-in-progress and has yet to be rigorously validated--use at your own risk.
+        </div>
+    </Message>
+{/if}
 <div class="submit-container">
     <form on:submit|preventDefault={onSubmit}>
         <Button type="submit" size="xl" class="bg-primary-600 text-nowrap min-w-[150px]">
