@@ -31,7 +31,7 @@
                 <div class="announcement">
                     <Message message={{ type: "announcement" }}>
                         <div>
-                            This is the development version of GEDIT 3.0. Please report any bugs to <a class="underline" href="mailto:miastay@ucla.edu">miastay@ucla.edu</a>.
+                            This is the development version of GEDIT 3.0. Please report any bugs to <a class="underline" href="mailto:cloves@stanford.edu">cloves@stanford.edu</a>.
                         </div>
                     </Message>
                 </div>

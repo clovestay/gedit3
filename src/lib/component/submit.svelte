@@ -83,6 +83,10 @@
             if($referenceMatrix.selectedCellTypes.some(cell => !$referenceMatrix.cellTypes.includes(cell))) throw new ValidationError("Unknown cell types selected")
             formData.append("SelectedCellTypes", JSON.stringify($referenceMatrix.selectedCellTypes))
 
+            if($referenceMatrix.special === "Tabula Sapiens") {
+                formData.append("Tissue", $referenceMatrix.tissue)
+            }
+
             console.log(formData)
             console.log($mixtureMatrix)
 
@@ -91,7 +95,38 @@
                 method: "POST",
                 body: formData,
             });
-            let result = await response.json();
+            
+            if(response.status >= 400) {
+                // error!
+                $analysisError = {
+                    "type": "error",
+                    "message": `${response.status} error. Please try again later.`
+                };
+            }
+
+            let result;
+
+            if(response.headers.get("content-type") !== "application/json") {
+                let result = await response.text();
+
+                // function extractContent(html) {
+                //     return new DOMParser()
+                //         .parseFromString(html, "text/html")
+                //         .documentElement.querySelector("body").textContent.substring(0, 100).trim();
+                // }
+                    
+                // alert(extractContent(result));
+
+                $analysisError = {
+                    "type": "error",
+                    "message": "GEDIT ran into an error, please try again later or contact the admin."
+                };
+                $loadingResults = false;
+                return;
+            }
+
+            result = await response.json();
+            
             if(result?.desc === "success" && result.uid) {
                 let heatmap = document.querySelector("#heatmap")
                 //heatmap.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `/Downloads/${result.uid}_Heatmap.svg`);
@@ -103,6 +138,8 @@
             }
 
         } catch(e) {
+
+            console.log(e)
 
             if(e instanceof ValidationError) {
                 $analysisError = {
@@ -118,7 +155,6 @@
 
         }
         $loadingResults = false;
-        
     }
 
 </script>

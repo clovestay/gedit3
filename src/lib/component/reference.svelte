@@ -89,6 +89,9 @@
     import { Modal } from 'flowbite-svelte';
     import ReferenceOption from './referenceOption.svelte';
     import Message from './message.svelte';
+    import Tabula from './tabula.svelte';
+    import Sapiens from './sapiens.svelte';
+    import { onMount } from 'svelte';
     let showInfoModal = false;
     let modalInfo = referenceMatrices[0] ?? null;
 
@@ -102,14 +105,17 @@
         console.log(types)
         // prevent duplicate uploads
         if(customMatrices.filter((x) => x.name === file).length > 0) return;
-        customMatrices.unshift({
+        let newCustomMatrix = {
             "name": file.name,
             "file": file,
             "type": "custom",
             "cellTypes": types,
             "selectedCellTypes": types
-        })
+        }
+        customMatrices.unshift(newCustomMatrix)
         customMatrices = customMatrices;
+        // auto-select uploaded reference
+        $referenceMatrix = newCustomMatrix;
     }
 
     function updateModal(info) {
@@ -128,11 +134,18 @@
 
 </script>
 
-<Modal title={modalInfo.name ?? ""} bind:open={showInfoModal} autoclose outsideclose class="max-w-[40vw]">
-    <p class="text-base flex flex-row items-center leading-relaxed text-gray-500 dark:text-gray-400"><UsersOutline class="w-5 h-5 mr-2" />{`Author: ${modalInfo.author}`}</p>
-    <p class="text-base flex flex-row items-center leading-relaxed text-gray-500 dark:text-gray-400"><DnaOutline class="w-5 h-5 mr-2" />{`Assay type: ${modalInfo.type}`}</p>
-    <p class="text-base flex flex-row items-center leading-relaxed text-gray-500 dark:text-gray-400"><BookOutline class="w-5 h-5 mr-2" /><a target="_blank" href={modalInfo.sourceRef}>{modalInfo.sourceRef}</a></p>
-</Modal>
+{#if modalInfo.special === "Tabula Sapiens"}
+    <Modal title={modalInfo.name ?? ""} bind:open={showInfoModal} autoclose outsideclose class="max-w-[40vw]">
+        <p>This is a hierarchical reference of 24 human tissue types, with 471 total cell types, compiled from UCSC Cell Browser data.</p>    
+    </Modal>
+{:else}
+    <Modal title={modalInfo.name ?? ""} bind:open={showInfoModal} autoclose outsideclose class="max-w-[40vw]">
+        <p class="text-base flex flex-row items-center leading-relaxed text-gray-500 dark:text-gray-400"><UsersOutline class="w-5 h-5 mr-2" />{`Author: ${modalInfo.author}`}</p>
+        <p class="text-base flex flex-row items-center leading-relaxed text-gray-500 dark:text-gray-400"><DnaOutline class="w-5 h-5 mr-2" />{`Assay type: ${modalInfo.type}`}</p>
+        <p class="text-base flex flex-row items-center leading-relaxed text-gray-500 dark:text-gray-400"><BookOutline class="w-5 h-5 mr-2" /><a target="_blank" href={modalInfo.sourceRef}>{modalInfo.sourceRef}</a></p>
+    </Modal>
+{/if}
+
 
 <Slide number="2" header="Choose reference" desc="Select a reference matrix of cell types to compute against">
     <div class="container">
@@ -148,6 +161,7 @@
                         </div>
                         <Tooltip>Upload a reference cell type matrix, where rows are cell types and columns are samples.</Tooltip>
                     {/if}
+                    <Tabula updateModal={updateModal}/>
                     {#each customMatrices as mat}
                         <ReferenceOption type="custom" name="custom" mat={mat} removeReference={removeReference}/>
                     {/each}
@@ -166,6 +180,9 @@
             </div>
         </div>
     </div>
+    {#if $referenceMatrix?.special === "Tabula Sapiens"}
+        <Sapiens />
+    {/if}
 </Slide>
 
 <style lang="scss">
