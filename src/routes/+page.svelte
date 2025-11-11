@@ -24,5 +24,6 @@
         flex-direction: column;
         height: 100vh;
         max-height: 100vh;
+        overflow-y: hidden;
     }
 </style>

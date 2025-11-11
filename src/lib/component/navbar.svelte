@@ -21,7 +21,7 @@
 
 
 <Modal title={"About"} bind:open={showAboutModal} autoclose outsideclose class="max-w-[55vw]">
-    <p><strong>GEDIT v3.0</strong> software written by Brian Nadel and Mia Taylor.</p>
+    <p><strong>GEDIT v3.0</strong> software written by Brian Nadel and Clove Taylor.</p>
     {#if stats}
         <div class="flex flex-col gap-1 mt-4">
             <span>Total requests made: {stats.total_requests ?? "Unknown"}</span>
