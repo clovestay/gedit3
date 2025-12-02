@@ -28,7 +28,10 @@
         console.log(file)
         if(file.size >= 1024*1024*50) {
             file = null;
-            errorMsg = "File too large! Please separate your mixture file into <50MB segments (make sure you don't lose your gene column)."
+            errorMsg = {
+                type: "error",
+                message: "File too large! Please separate your mixture file into <50MB segments (make sure you don't lose your gene column)."
+            }
         }
         if(file === null) {
             $uploadedMixtureMatrix = null;
