@@ -1,11 +1,14 @@
 <script>
-    import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, Modal } from 'flowbite-svelte';
+    import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, Modal, Textarea, Button } from 'flowbite-svelte';
     import { onMount } from 'svelte';
     import geditLogo from '$lib/img/SVG/gedit-logo.svg';
     import Blurb from './blurb.svelte';
 
     let showAboutModal = false;
+    let showCiteModal = false;
     let stats = null;
+
+    let citation = `Nadel, Brian B., et al. "The Gene Expression Deconvolution Interactive Tool (GEDIT): accurate cell type quantification from gene expression data." GigaScience 10.2 (2021): giab002.`
 
     onMount(() => {
         fetch("/util/stats.json")
@@ -18,6 +21,8 @@
     })
 
 </script>
+
+
 
 
 <Modal title={"About"} bind:open={showAboutModal} autoclose outsideclose class="max-w-[55vw]">
@@ -35,6 +40,14 @@
     {/if}
 </Modal>
 
+<Modal title={"Cite GEDIT"} bind:open={showCiteModal} outsideclose class="max-w-[55vw]">
+    <Textarea bind:value={citation} class="w-full min-h-[6rem]" style="cursor: default !important" disabled/>
+    <Button on:click={() => {
+        console.log("x")
+        navigator.clipboard.writeText(citation)
+    }}>Copy</Button>
+</Modal>
+
 <div class="gradient">
     <Navbar class="py-4" fluid=true>
         <NavBrand href="/" class="flex-col gap-0 items-start h-full">
@@ -46,7 +59,7 @@
         <NavUl ulClass="flex flex-col p-4 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 text-lg font-medium">
             <NavLi class="cursor-pointer select-none" on:click={() => showAboutModal = true}>About</NavLi>
             <NavLi href="https://www.biorxiv.org/content/10.1101/728493v2">Read the Paper</NavLi>
-            <NavLi href="https://scholar.google.com/scholar?cluster=10492765248119991160&hl=en&as_sdt=0,5#d=gs_cit&t=1719196159912&u=%2Fscholar%3Fq%3Dinfo%3AeGvBbWbKnZEJ%3Ascholar.google.com%2F%26output%3Dcite%26scirp%3D0%26scfhb%3D1%26hl%3Den">Cite GEDIT</NavLi>
+            <NavLi class="cursor-pointer select-none" on:click={() => showCiteModal = true}>Cite GEDIT</NavLi>
         </NavUl>
     </Navbar>
 </div>

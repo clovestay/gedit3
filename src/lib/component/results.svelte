@@ -99,7 +99,8 @@
                 </div>
                 <div class="mt-6 flex flex-col w-full gap-2">
                     <Button on:click={() => window.open(`/Downloads/${$analysisResult.uid}_Heatmap.svg`, '_blank')} class={'bg-primary-100 text-primary-700 hover:bg-primary-100'}>{`Download heatmap (SVG)`}</Button>
-                    <Button on:click={() => window.open(`/Downloads/${$analysisResult.uid}_SigMix.tsv`, '_blank')} class={'bg-primary-100 text-primary-700 hover:bg-primary-100'}>{`Download significant genes (TSV)`}</Button>
+                    <Button on:click={() => window.open(`/Downloads/${$analysisResult.uid}_SigMix.tsv`, '_blank')} class={'bg-primary-100 text-primary-700 hover:bg-primary-100'}>{`Download significant genes in mixture (TSV)`}</Button>
+                    <Button on:click={() => window.open(`/Downloads/${$analysisResult.uid}_localBest.tsv`, '_blank')} class={'bg-primary-100 text-primary-700 hover:bg-primary-100'}>{`Download local best gene scores (TSV)`}</Button>
                     <Button on:click={() => window.open(`/Downloads/${$analysisResult.uid}_CTPredictions.tsv`, '_blank')} class={'bg-primary-600 text-white hover:bg-primary-600'}>{`Download results (TSV)`}</Button>
                 </div>
                 {:else}
