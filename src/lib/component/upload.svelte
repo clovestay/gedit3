@@ -86,17 +86,20 @@
                         message: `Only ${numGenes} columns detected. Your mixture should contain enough genes to generate a successful signature.`,
                         type: "warning"
                     })
-                } else if(longestGene >= 20) {
-                    error({
-                        message: `Some gene names longer than expected. Make sure the first column contains valid HGNC gene symbols.`,
-                        type: "warning"
-                    })
                 } else {
                     let numSamples = firstLine.split(sep).length - 1;
-                    error({
-                        message: `Loaded ${numGenes} genes and ${numSamples} samples.`,
-                        type: "success"
-                    })
+                    if(longestGene >= 20) {
+                        error({
+                            message: `Loaded ${numGenes} genes and ${numSamples} samples.
+                            Some gene names longer than expected, make sure the first column contains valid HGNC gene symbols.`,
+                            type: "warning"
+                        })
+                    } else {
+                        error({
+                            message: `Loaded ${numGenes} genes and ${numSamples} samples.`,
+                            type: "success"
+                        })
+                    }
                 }
                 update(file)
             }
